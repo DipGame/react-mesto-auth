@@ -2,7 +2,7 @@ import logoPen from '../images/Vector.png';
 import { api } from '../utils/Api.js';
 import { useState, useEffect } from 'react';
 import Card from './Card.js';
-import {CurrentUserContext} from '../contexts/CurrentUserContext';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import React from 'react';
 
 export default function Main(props) {
@@ -30,8 +30,7 @@ export default function Main(props) {
       <section className="elements">
         {
           cards.map((item) => {
-            
-            return <Card onCardDelete={props.onCardDelete} onCardClick={props.onCardClick} onCardLike={props.onCardLike} card={item} key={item._id} name={item.name} link={item.link} likes={item.likes.length}/>
+            return <Card onCardDelete={props.onCardDelete} onCardClick={props.onCardClick} onCardLike={props.onCardLike} card={item} key={item._id} name={item.name} link={item.link} likes={item.likes.length} />
           })
         }
       </section>

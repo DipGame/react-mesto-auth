@@ -5,39 +5,39 @@ import React from 'react';
 
 export default function EditProfilePopup(props) {
 
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-
     const currentUser = React.useContext(CurrentUserContext);
+
+    const [name, setName] = useState(currentUser.name);
+    const [description, setDescription] = useState(currentUser.about);
 
     useEffect(() => {
         setName(currentUser.name);
         setDescription(currentUser.about);
-    }, [currentUser]);
+    }, [currentUser, props.isOpen]);
 
     function handleSubmit(e) {
         e.preventDefault();
 
         props.onUpdateUser({
-            name: name,
-            about: description,
+            name,
+            about: description
         });
     }
 
     function handleChangeName(e) {
         setName(e.target.value);
-      }
+    }
 
-
-      function handleChangeDescription(e) {
+    function handleChangeDescription(e) {
         setDescription(e.target.value);
-      }
+    }
 
     return (
-        <PopupWithForm onSubmit={handleSubmit} isOpen={props.isOpen} onClose={props.onClose} name='popup' text='Редактировать профиль'>
+        <PopupWithForm buttonText='Сохранить' onSubmit={handleSubmit} isOpen={props.isOpen} onClose={props.onClose} name='popup' text='Редактировать профиль'>
             <input
-            onChange={handleChangeName}
+                onChange={handleChangeName}
                 id="popupUserName"
+                value={name}
                 className="popup__input popup__input_one"
                 type="text"
                 name="name"
@@ -51,8 +51,9 @@ export default function EditProfilePopup(props) {
                 id="errorUserName"
             />
             <input
-            onChange={handleChangeDescription}
+                onChange={handleChangeDescription}
                 id="popupProfName"
+                value={description}
                 className="popup__input popup__input_two"
                 type="text"
                 name="profession"

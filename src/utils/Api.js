@@ -28,36 +28,36 @@ export default class Api {
 
     }
 
-    createNewCard(nameImg, linkImg) {
+    createNewCard(data) {
         return fetch(`${this._url}/v1/cohort-58/cards`, {
             headers: this._headers,
             method: 'POST',
             body: JSON.stringify({
-                name: nameImg,
-                link: linkImg
+                name: data.name,
+                link: data.link
             })
         })
             .then(this._checkResponse())
     }
 
-    setUserInfo(nameUser, aboutUser) {
+    setUserInfo(data) {
         return fetch(`${this._url}/v1/cohort-58/users/me`, {
             headers: this._headers,
             method: 'PATCH',
             body: JSON.stringify({
-                name: nameUser,
-                about: aboutUser
+                name: data.name,
+                about: data.about
             })
         })
             .then(this._checkResponse())
     }
 
-    createNewAvatar(url) {
+    createNewAvatar(data) {
         return fetch(`${this._url}/v1/cohort-58/users/me/avatar`, {
             headers: this._headers,
             method: 'PATCH',
             body: JSON.stringify({
-                avatar: url,
+                avatar: data.avatar,
             })
         })
             .then(this._checkResponse())

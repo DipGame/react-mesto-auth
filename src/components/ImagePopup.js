@@ -6,7 +6,7 @@ export default function ImagePopup(props) {
                 <img
                     className="img-form__picture"
                     alt="Здесь должна была быть картинка"
-                    src ={props.card ? props.card.link : ''}
+                    src={props.card ? props.card.link : ''}
                 />
                 <h2 className="img-form__title">{props.card.name}</h2>
             </form>
