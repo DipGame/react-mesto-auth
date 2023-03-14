@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { api } from '../utils/Api.js';
+import Login from './Login.js';
 import Main from './Main.js';
 import Header from './Header.js';
 import Footer from './Footer.js';
@@ -29,7 +31,6 @@ function App() {
       .getUserInfo()
       .then((data) => {
         setCurrentUser(data);
-        // console.log(data);
       })
       .catch((err) => console.log(err))
   }, []);
@@ -129,8 +130,11 @@ function App() {
       <div className="body">
         <div className="page">
           <Header />
-          <Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleEditPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete} cards={cards} />
+          <Routes>
+            <Route path='/' element={<Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleEditPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete} cards={cards} />} />
+              <Route path='/login' element={<Login />} />
+          </Routes>
           <Footer />
 
         </div>
