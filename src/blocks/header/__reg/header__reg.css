@@ -1,0 +1,11 @@
+.header__reg {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    color: #FFF;
+    margin-left: auto;
+    text-decoration: none;
+    margin-top: 15px;
+}

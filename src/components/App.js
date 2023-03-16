@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { api } from '../utils/Api.js';
 import Login from './Login.js';
+import Register from './Register.js';
 import Main from './Main.js';
 import Header from './Header.js';
 import Footer from './Footer.js';
@@ -11,6 +12,7 @@ import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import ImagePopup from './ImagePopup.js';
+import ProtectedRoute from './ProtectedRoute.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
@@ -24,7 +26,10 @@ function App() {
     name: '',
     about: '',
   });
+
   const [cards, setCards] = useState([]);
+
+  const [loggedIn, setloggedIn] = useState(false);
 
   useEffect(() => {
     api
@@ -129,14 +134,17 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="body">
         <div className="page">
-          <Header />
           <Routes>
-            <Route path='/' element={<Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleEditPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete} cards={cards} />} />
-              <Route path='/login' element={<Login />} />
+          <Route path="/" element={<ProtectedRoute element={
+              <>
+                <Header />
+                <Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleEditPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete} cards={cards} />
+                <Footer />
+              </>} loggedIn={loggedIn}/>} />
+            <Route path='/sign-in' element={<Login />} />
+            <Route path='/sign-up' element={<Register />} />
           </Routes>
-          <Footer />
-
         </div>
         <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
 
