@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/Vector.svg';
 
+
 export default function SignForm(props) {
 
     const [formValue, setFormValue] = useState({
@@ -23,9 +24,8 @@ export default function SignForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log('hiSub');
-        const { email, password } = formValue;
-        props.auth( email, password ).then((res) => {
-            navigate('/sing-in', { replace: true });
+        props.auth( formValue.email, formValue.password ).then((res) => {
+            navigate('/sign-in', { replace: true });
         })
     }
     
