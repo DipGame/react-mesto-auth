@@ -4,38 +4,44 @@ export const register = (userEmail, userPass) => {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      email: userEmail,
-      password: userPass
+      password: userPass,
+      email: userEmail
     })
   })
+    .then((response) => {
+      return response.json();
+    })
     .then((res) => {
-      console.log(res);
       return res;
     })
-    .catch((err) => console.log(err));
+    
 };
 
-export const login = (userEmail, userPass) => {
+export const authorize = (userEmail, userPass) => {
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      email: userEmail,
-      password: userPass
+      password: userPass,
+      email: userEmail
     })
   })
-    .then((response => response.json()))
-    .then((data) => {
-      if (data.jwt) {
-        localStorage.setItem('jwt', data.jwt);
-        console.log(localStorage.setItem('jwt', data.jwt));
-        return data;
-      }
-    })
-    .catch((err) => console.log(err));
+  .then((response => response.json()))
 };
+
+export const checkToken = (token) => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    }
+  })
+    .then(res => res.json())
+    .then(data => data)
+}

@@ -11,3 +11,15 @@
     background-color: #000000;
     display: block;
 }
+
+@media (max-width: 669px) {
+    .sign__pass {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        width: 260px;
+        margin: auto;
+    }
+}

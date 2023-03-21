@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, Outlet } from 'react-router-dom';
+import * as RegisterAuth from '../RegisterAuth.js';
 import { api } from '../utils/Api.js';
 import Login from './Login.js';
 import Register from './Register.js';
@@ -14,10 +15,15 @@ import AddPlacePopup from './AddPlacePopup.js';
 import ImagePopup from './ImagePopup.js';
 import ProtectedRoute from './ProtectedRoute.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import GoodSuccess from './GoodSuccess.js';
+import NoGoodSuccess from './NoGoodSuccess.js';
+
 
 function App() {
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isGoodSuccesPopupOpen, setIsGoodSuccesPopupOpen] = useState(false);
+  const [isNoGoodSuccesPopupOpen, setIsNoGoodSuccesPopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
@@ -27,9 +33,56 @@ function App() {
     about: '',
   });
 
+  const navigate = useNavigate();
+
   const [cards, setCards] = useState([]);
 
-  const [loggedIn, setloggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const [emailLogin, setEmailLogin] = useState('');
+
+  useEffect(() => {
+    handleTokenCheck();
+  }, [])
+
+  const handleTokenCheck = () => {
+    if (localStorage.getItem('jwt')) {
+      const jwt = localStorage.getItem('jwt');
+      RegisterAuth.checkToken(jwt).then((res) => {
+        console.log(res.data.email);
+        setEmailLogin(res.data.email);
+        setLoggedIn(true);
+        navigate('/', { replace: true });
+      });
+    }
+  }
+  
+  const handleLogin = () => {
+    setLoggedIn(true);
+    const jwt = localStorage.getItem('jwt');
+    RegisterAuth.checkToken(jwt).then((res) => {
+      setLoggedIn(true);
+      setEmailLogin(res.data.email);
+    });
+  }
+
+  function goodSuccess() {
+    setIsGoodSuccesPopupOpen(true);
+    setTimeout(goodSuccessFalse, 1000);
+  }
+
+  function goodSuccessFalse() {
+    setIsGoodSuccesPopupOpen(false);
+  }
+
+  function noGoodSuccess() {
+    setIsNoGoodSuccesPopupOpen(true);
+    setTimeout(noGoodSuccessFalse, 1000);
+  }
+
+  function noGoodSuccessFalse() {
+    setIsNoGoodSuccesPopupOpen(false);
+  }
 
   useEffect(() => {
     api
@@ -135,17 +188,25 @@ function App() {
       <div className="body">
         <div className="page">
           <Routes>
-          <Route path="/" element={<ProtectedRoute element={
-              <>
-                <Header />
-                <Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleEditPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike}
-                  onCardDelete={handleCardDelete} cards={cards} />
-                <Footer />
-              </>} loggedIn={loggedIn}/>} />
-            <Route path='/sign-in' element={<Login />} />
-            <Route path='/sign-up' element={<Register />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute loggedIn={loggedIn}>
+                  <Header login={emailLogin} />
+                  <Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleEditPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelete} cards={cards} />
+                  <Footer />
+                </ProtectedRoute>
+              } />
+            <Route path='/sign-in' element={<Login handleLogin={handleLogin} />} />
+            <Route path='/sign-up' element={<Register good={goodSuccess} noGood={noGoodSuccess} />} />
           </Routes>
         </div>
+
+        <GoodSuccess isOpen={isGoodSuccesPopupOpen} />
+
+        <NoGoodSuccess isOpen={isNoGoodSuccesPopupOpen} />
+
         <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
 
         <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />

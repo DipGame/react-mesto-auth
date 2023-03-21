@@ -3,11 +3,22 @@
 @import url(./vendor/fonts/fonts.css);
 @import url(./blocks/page/page.css);
 
+@import url(./blocks/success/success.css);
+@import url(./blocks/success/__lable/success__lable.css);
+@import url(./blocks/success/__title/success__title.css);
 
+@import url(./blocks/top/top.css);
+@import url(./blocks/top/__esc/top__esc.css);
+@import url(./blocks/top/__login/top__login.css);
 
 @import url(./blocks/header/header.css);
+@import url(./blocks/header/__close/header__close.css);
+@import url(./blocks/header/__three/header__three.css);
 @import url(./blocks/header/__logo/header__logo.css);
 @import url(./blocks/header/__reg/header__reg.css);
+@import url(./blocks/header/__container/header__container.css);
+@import url(./blocks/header/__esc/header__esc.css);
+@import url(./blocks/header/__login/header__login.css);
 
 @import url(./blocks/profile/profile.css);
 @import url(./blocks/profile/__avatar/profile__avatar.css);

@@ -9,3 +9,16 @@
     color: #000;
     margin-top: 216px;
 }
+
+@media (max-width: 669px) {
+    .sign__button {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        width: 260px;
+        margin: auto;
+        margin-top: 173px;
+    }
+}
