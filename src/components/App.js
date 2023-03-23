@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
 import { Routes, Route, Navigate, useNavigate, Outlet } from 'react-router-dom';
-import * as RegisterAuth from '../RegisterAuth.js';
+import * as RegisterAuth from '../utils/RegisterAuth.js';
 import { api } from '../utils/Api.js';
 import Login from './Login.js';
 import Register from './Register.js';
@@ -17,6 +17,7 @@ import ProtectedRoute from './ProtectedRoute.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import GoodSuccess from './GoodSuccess.js';
 import NoGoodSuccess from './NoGoodSuccess.js';
+import threeLine from '../images/3line.png';
 
 
 function App() {
@@ -53,34 +54,36 @@ function App() {
         setEmailLogin(res.data.email);
         setLoggedIn(true);
         navigate('/', { replace: true });
-      });
+      })
+        .catch((err) => {
+          console.log(err);
+        })
     }
   }
-  
+
+  function handleSetEmail(mail) {
+    setEmailLogin(mail);
+  }
+
   const handleLogin = () => {
     setLoggedIn(true);
-    const jwt = localStorage.getItem('jwt');
-    RegisterAuth.checkToken(jwt).then((res) => {
-      setLoggedIn(true);
-      setEmailLogin(res.data.email);
-    });
   }
 
-  function goodSuccess() {
+  function openGoodSuccess() {
     setIsGoodSuccesPopupOpen(true);
-    setTimeout(goodSuccessFalse, 1000);
+    setTimeout(closeGoodSuccess, 1000);
   }
 
-  function goodSuccessFalse() {
+  function closeGoodSuccess() {
     setIsGoodSuccesPopupOpen(false);
   }
 
-  function noGoodSuccess() {
+  function openNoGoodSuccess() {
     setIsNoGoodSuccesPopupOpen(true);
-    setTimeout(noGoodSuccessFalse, 1000);
+    setTimeout(closeNoGoodSuccess, 1000);
   }
 
-  function noGoodSuccessFalse() {
+  function closeNoGoodSuccess() {
     setIsNoGoodSuccesPopupOpen(false);
   }
 
@@ -96,11 +99,7 @@ function App() {
   useEffect(() => {
     api.getAllCards()
       .then((data) => {
-        const newCards = data.map((card) => {
-          return card
-        })
-
-        setCards(newCards)
+        setCards(data)
       })
       .catch((err) => console.log(err))
   }, [])
@@ -144,7 +143,6 @@ function App() {
         closeAllPopups();
       })
       .catch((err) => console.log(err));
-    closeAllPopups();
   }
 
   function handleAddPlaceSubmit({ name, link }) {
@@ -192,14 +190,14 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute loggedIn={loggedIn}>
-                  <Header login={emailLogin} />
+                  <Header login={emailLogin} button={'Выйти'} threeLine={threeLine} />
                   <Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleEditPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike}
                     onCardDelete={handleCardDelete} cards={cards} />
                   <Footer />
                 </ProtectedRoute>
               } />
-            <Route path='/sign-in' element={<Login handleLogin={handleLogin} />} />
-            <Route path='/sign-up' element={<Register good={goodSuccess} noGood={noGoodSuccess} />} />
+            <Route path='/sign-in' element={<Login handleLogin={handleLogin} onSelectMail={handleSetEmail} good={openGoodSuccess} noGood={openNoGoodSuccess} />} />
+            <Route path='/sign-up' element={<Register good={openGoodSuccess} noGood={openNoGoodSuccess} />} />
           </Routes>
         </div>
 
@@ -215,7 +213,6 @@ function App() {
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
-      <template className="placeTemplate" id="placeCardTemplate" />
     </CurrentUserContext.Provider>
   );
 }

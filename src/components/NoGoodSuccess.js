@@ -5,7 +5,7 @@ import React from 'react';
 export default function NoGoodSuccess(props) {
 
     return (
-        <InfoTooltip lable={lableNoOk} title={'Что-то пошло не так! Попробуйте ещё раз.'} />
+        <InfoTooltip isOpen={props.isOpen} lable={lableNoOk} title={'Что-то пошло не так! Попробуйте ещё раз.'} />
     )
 }
 

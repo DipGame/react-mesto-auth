@@ -1,7 +1,8 @@
-import * as RegisterAuth from '../RegisterAuth.js';
+import * as RegisterAuth from '../utils/RegisterAuth.js';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/Vector.svg';
+import Header from './Header.js';
 
 export default function Register(props) {
 
@@ -22,7 +23,7 @@ export default function Register(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        
+
         console.log('hiSub');
         RegisterAuth.register(formValue.email, formValue.password)
             .then((data) => {
@@ -38,37 +39,32 @@ export default function Register(props) {
 
     return (
         <>
-            <header className="header">
-                <img
-                    className="header__logo"
-                    src={logo}
-                    alt="Россия"
-                />
-                <Link to='/sign-in' className='header__reg'>Войти</Link>
-            </header>
+            <Header link={'Войти'} sign={'/sign-in'} />
             <div className="sign">
                 <h2 className="sign__title">Регистрация</h2>
-                <input
-                    className="sign__mail"
-                    id="signRegMail"
-                    value={formValue.email}
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    required=""
-                    onChange={handleChange}>
-                </input>
-                <input
-                    className="sign__pass"
-                    id="signRegPass"
-                    value={formValue.password}
-                    type="password"
-                    name="password"
-                    placeholder="Пароль"
-                    required=""
-                    onChange={handleChange}>
-                </input>
-                <button type="submit" onClick={handleSubmit} className="sign__button">Зарегистрироваться</button>
+                <form className='sign__form' onSubmit={handleSubmit}>
+                    <input
+                        className="sign__mail"
+                        id="signRegMail"
+                        value={formValue.email}
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        required=""
+                        onChange={handleChange}>
+                    </input>
+                    <input
+                        className="sign__pass"
+                        id="signRegPass"
+                        value={formValue.password}
+                        type="password"
+                        name="password"
+                        placeholder="Пароль"
+                        required=""
+                        onChange={handleChange}>
+                    </input>
+                    <button type="submit" className="sign__button">Зарегистрироваться</button>
+                </form>
                 <h3 className='sign__answer'>Уже зарегистрированы? <Link className='sign__link' to='/sign-in' >Войти</Link></h3>
             </div>
         </>

@@ -11,14 +11,20 @@ export const register = (userEmail, userPass) => {
       email: userEmail
     })
   })
-    .then((response) => {
-      return response.json();
-    })
     .then((res) => {
       return res;
-    })
-    
+    })  
+    .then(checkResponse())
 };
+
+function checkResponse() {
+  return (response) => {
+      if (response.ok) {
+          return response.json()
+      }
+      return Promise.reject(new Error('Что-то пошло не так....'))
+  }
+}
 
 export const authorize = (userEmail, userPass) => {
   return fetch(`${BASE_URL}/signin`, {
@@ -31,7 +37,7 @@ export const authorize = (userEmail, userPass) => {
       email: userEmail
     })
   })
-  .then((response => response.json()))
+  .then(checkResponse())
 };
 
 export const checkToken = (token) => {
@@ -42,6 +48,6 @@ export const checkToken = (token) => {
       'Authorization': `Bearer ${token}`,
     }
   })
-    .then(res => res.json())
     .then(data => data)
+    .then(checkResponse())
 }

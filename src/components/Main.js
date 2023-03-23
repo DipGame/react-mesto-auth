@@ -30,7 +30,7 @@ export default function Main(props) {
       <section className="elements">
         {
           cards.map((item) => {
-            return <Card onCardDelete={props.onCardDelete} onCardClick={props.onCardClick} onCardLike={props.onCardLike} card={item} key={item._id} name={item.name} link={item.link} likes={item.likes.length} />
+            return (<Card onCardDelete={props.onCardDelete} onCardClick={props.onCardClick} onCardLike={props.onCardLike} card={item} key={item._id} name={item.name} link={item.link} likes={item.likes.length} />)
           })
         }
       </section>

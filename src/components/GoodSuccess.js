@@ -5,7 +5,7 @@ import React from 'react';
 export default function GoodSuccess(props) {
 
     return (
-        <InfoTooltip isOpen={props.isOpen} lable={lableOk} title={'Вы успешно зарегистрировались!'} />
+        <InfoTooltip isOpen={props.isOpen} lable={lableOk} title={'Успешно!'} />
     )
 }
 

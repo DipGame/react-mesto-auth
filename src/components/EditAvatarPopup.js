@@ -18,7 +18,7 @@ export default function EditAvatarPopup(props) {
 
     useEffect(() => {
         refInput.current.value = ''
-    }, [handleSubmit]);
+    }, [props.isOpen]);
 
     return (
         <PopupWithForm buttonText='Сохранить' onSubmit={handleSubmit} isOpen={props.isOpen} onClose={props.onClose} name='avatar' text='Обновить аватар'>

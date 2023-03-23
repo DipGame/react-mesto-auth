@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import * as RegisterAuth from '../RegisterAuth.js';
+import * as RegisterAuth from '../utils/RegisterAuth.js';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/Vector.svg';
+import Header from './Header.js';
 
 
 export default function Login({ handleLogin, ...props }) {
@@ -30,56 +31,50 @@ export default function Login({ handleLogin, ...props }) {
     RegisterAuth.authorize(formValue.email, formValue.password)
       .then((data) => {
         if (data.token) {
-          console.log(data.token);
+          props.good();
+          props.onSelectMail(formValue.email);
           setFormValue({ email: '', password: '' });
           navigate('/', { replace: true });
           localStorage.setItem('jwt', data.token);
           handleLogin();
-      return data;
-        } else {
-          props.noGood();
-        console.log('higoodpiss')
+          return data;
         }
       })
       .catch((err) => {
+        props.noGood();
         console.log(err)
       })
   }
 
-
   return (
     <>
-      <header className="header">
-        <img
-          className="header__logo"
-          src={logo}
-          alt="Россия"
-        />
-        <Link to='/sign-up' className='header__reg'>Регистрация</Link>
-      </header>
+    <Header link={'Регистрация'} sign={'/sign-up'} />
+    
       <div className="sign">
         <h2 className="sign__title">Вход</h2>
-        <input
-          className="sign__mail"
-          id="signRegMail"
-          value={formValue.email}
-          type="email"
-          name="email"
-          placeholder="Email"
-          required=""
-          onChange={handleChange}>
-        </input>
-        <input
-          className="sign__pass"
-          id="signRegPass"
-          value={formValue.password}
-          type="password"
-          name="password"
-          placeholder="Пароль"
-          required=""
-          onChange={handleChange}>
-        </input>
-        <button type="submit" onClick={handleSubmit} className="sign__button">Вход</button>
+        <form className='sign__form' onSubmit={handleSubmit}>
+          <input
+            className="sign__mail"
+            id="signRegMail"
+            value={formValue.email}
+            type="email"
+            name="email"
+            placeholder="Email"
+            required=""
+            onChange={handleChange}>
+          </input>
+          <input
+            className="sign__pass"
+            id="signRegPass"
+            value={formValue.password}
+            type="password"
+            name="password"
+            placeholder="Пароль"
+            required=""
+            onChange={handleChange}>
+          </input>
+        <button type="submit" className="sign__button">Вход</button>
+        </form>
       </div>
     </>
   );

@@ -15,10 +15,12 @@ export default function AddPlacePopup(props) {
       name,
       link
     });
+  }
 
+  useEffect(() => {
     setName('');
     setLink('');
-  }
+  }, [props.isOpen]);
 
   function handleChangeName(e) {
     setName(e.target.value);
