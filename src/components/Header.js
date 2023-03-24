@@ -58,7 +58,7 @@ export default function Header(props) {
           <img className='header__close' onClick={closeThree} src={close}></img>
           <button onClick={signOut} className='header__esc' >{props.button}</button>
           <h2 className='header__reg header__login'>{props.login}</h2>
-          <Link to={props.sign} className='header__reg'>{props.link}</Link>
+          {props.sign && <Link to={props.sign} className='header__reg'>{props.link}</Link>}
         </div>
       </header>
     </>
