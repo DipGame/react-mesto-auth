@@ -189,12 +189,16 @@ function App() {
             <Route
               path="/"
               element={
-                <ProtectedRoute loggedIn={loggedIn}>
+                <>
                   <Header login={emailLogin} button={'Выйти'} threeLine={threeLine} />
-                  <Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleEditPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike}
-                    onCardDelete={handleCardDelete} cards={cards} />
+                  <ProtectedRoute loggedIn={loggedIn}>
+
+                    <Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleEditPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike}
+                      onCardDelete={handleCardDelete} cards={cards} />
+
+                  </ProtectedRoute>
                   <Footer />
-                </ProtectedRoute>
+                </>
               } />
             <Route path='/sign-in' element={<Login handleLogin={handleLogin} onSelectMail={handleSetEmail} good={openGoodSuccess} noGood={openNoGoodSuccess} />} />
             <Route path='/sign-up' element={<Register good={openGoodSuccess} noGood={openNoGoodSuccess} />} />
